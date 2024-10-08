@@ -1,23 +1,23 @@
 package modelos;
 
 public class Producto {
-    private int id; // Asegúrate de incluir el id
+    private int codigo; // Asegúrate de incluir el codigo
     private String marca;
     private String modelo;
     private double precio; // Cambiado a double
     private int cantidad; // Se mantiene cantidad
     private String descripcion;
 
-    // Constructor para crear un Producto con id 
+    // Constructor para crear un Producto con codigo 
     public Producto(int id, String marca, String modelo, double precio, int cantidad, String descripcion) {
-        this.id = id;
+        this.codigo = id;
         this.marca = marca;
         this.modelo = modelo;
         this.precio = precio;
         this.cantidad = cantidad;
         this.cantidad = cantidad;
     }
-    //  Constructor para crear un producto sin id
+    //  Constructor para crear un producto sin codigo
     public Producto( String marca, String modelo, double precio, int cantidad, String descripcion) {
         this.marca = marca;
         this.modelo = modelo;
@@ -27,12 +27,12 @@ public class Producto {
     }
 
     // Métodos getters y setters
-    public int getId() {
-        return id;
+    public int getCodigo() {
+        return codigo;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setCodigo(int codigo) {
+        this.codigo = codigo;
     }
 
     public String getMarca() {
@@ -78,11 +78,11 @@ public class Producto {
     // Método toString para mostrar información del producto
     @Override
     public String toString() {
-        return id + "/ Marca: " + marca + "/ Modelo: " + modelo + "/ Precio: " + precio + "/ Descripción: " + descripcion;
+        return codigo + "/ Marca: " + marca + "/ Modelo: " + modelo + "/ Precio: " + precio + "/ Descripción: " + descripcion;
     }
 
     public String modeloYValor() {
-        return id + "/ Modelo: " + modelo + "/ Precio: " + precio;
+        return codigo + "/ Modelo: " + modelo + "/ Precio: " + precio;
     }
 
 }

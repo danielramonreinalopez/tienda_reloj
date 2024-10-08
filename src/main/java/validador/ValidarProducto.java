@@ -36,7 +36,7 @@ public class ValidarProducto {
 
     public static boolean validarProducto(Producto producto) {
         // Validamos todos los campos del producto
-        return validarId(producto.getId()) &&
+        return validarId(producto.getCodigo()) &&
                validarMarca(producto.getMarca()) &&
                validarModelo(producto.getModelo()) &&
                validarPrecio(producto.getPrecio()) &&

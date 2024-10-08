@@ -41,7 +41,7 @@ public class FacturaRepositorio {
             try (PreparedStatement statementProducto = conexion.prepareStatement(consultaProducto)) {
                 for (Producto producto : factura.getProducto()) {
                     statementProducto.setInt(1, facturaId); // Establecer el ID de la factura generada
-                    statementProducto.setInt(2, producto.getId()); // ID del producto
+                    statementProducto.setInt(2, producto.getCodigo()); // ID del producto
                     statementProducto.executeUpdate(); // Guardar la relación en la tabla factura_producto
                 }
             }
