@@ -43,13 +43,13 @@ public class ValidarFactura {
         return total >= 0;
     }
 
-    public static boolean validarFactura(Factura factura) {
-        // Validamos todos los campos de la factura
-        return validarId(factura.getId()) &&
-               validarCliente(factura.getCliente()) &&
-               validarProductos(factura.getProducto()) &&
-               validarFecha(factura.getFecha()) &&
-               validarTotal(factura.getTotal());
-    }
+//    public static boolean validarFactura(Factura factura) {
+//        // Validamos todos los campos de la factura
+//        return validarId(factura.getId()) &&
+//               validarCliente(factura.getCliente()) &&
+//               validarProductos(factura.getProducto()) &&
+//               validarFecha(factura.getFecha()) &&
+//               validarTotal(factura.getTotal());
+//    }
 
 }
