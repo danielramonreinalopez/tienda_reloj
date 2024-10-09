@@ -17,8 +17,8 @@ import modelos.Administrador;
  */
 public class ControladorInicio {
     
-    ServicioCliente serCliente;
-    ServicioAdministrador serAdmi;
+    ServicioCliente serCliente = new ServicioCliente();
+    ServicioAdministrador serAdmi = new ServicioAdministrador();
     
     public boolean iniciarSesion(String correo, String contraseña)throws SQLException, InvalidoException{
         
