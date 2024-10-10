@@ -6,6 +6,7 @@ package com.mycompany.tiendareloj;
 
 import conexionBD.ConfiguracionBaseDatos;
 import controlador.ControladorCliente;
+import controlador.ControladorIA;
 import excepcion.InvalidoException;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -22,7 +23,7 @@ import servicio.ServicioCliente;
 public class TiendaReloj {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+    /*    System.out.println("Hello World!");
          ClienteRepositorio clienteRepo = new ClienteRepositorio();
          ServicioCliente servicio = new ServicioCliente();
 
@@ -102,5 +103,47 @@ public class TiendaReloj {
             System.err.println("Error al obtener productos: " + e.getMessage());
         }
     }
+<<<<<<< HEAD
         
+=======
+    */
+    
+    /*
+        // Crear una instancia del controlador de IA
+        ControladorIA controladorIA = new ControladorIA();
+
+        // Mensaje de prueba
+        String mensaje = "Escribe un texto para generar contenido.";
+
+        // Llamar al método crearContenido y mostrar el resultado
+        String contenidoGenerado = controladorIA.crearContenido(mensaje);
+        
+        // Imprimir el contenido generado en la consola
+        if (contenidoGenerado != null) {
+            System.out.println("Contenido generado:");
+            System.out.println(contenidoGenerado);
+        } else {
+            System.out.println("No se pudo generar contenido.");
+        }
+    }
+    */
+    
+     ControladorIA controladorIA = new ControladorIA();
+
+        // Filtrar productos por modelo
+        System.out.println("Filtrar productos por modelo 'G-shock':");
+        controladorIA.buscarYGenerarContenido("G-shock");
+
+        // Filtrar productos por marca
+        System.out.println("\nFiltrar productos por marca 'Cassio':");
+        controladorIA.buscarYGenerarContenido("Cassio");
+
+        // Intentar filtrar productos no existentes
+        System.out.println("\nFiltrar productos no existentes:");
+        controladorIA.buscarYGenerarContenido("NoExistente");
+    }
 }
+
+
+
+

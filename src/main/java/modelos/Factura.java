@@ -1,10 +1,10 @@
 package modelos;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class Factura {
-    private int id;
     private Cliente cliente;
     private Carrito carrito;
     private Date fecha;
@@ -17,19 +17,17 @@ public class Factura {
         this.total = total;
     	this.cliente = cliente;
         this.carrito = carrito;
+
     }
 
-   
+    // Método para calcular automáticamente el total sumando los precios de los productos
+//    private double calcularTotal() {
+//        return productos.stream()
+//                .mapToDouble(Producto::getPrecio)
+//                .sum();
+//    }
 
     // Getters y Setters
-   /* public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-*/
     public Cliente getCliente() {
         return cliente;
     }
@@ -44,13 +42,14 @@ public class Factura {
 
     public void setCarrito(Carrito carrito) {
         this.carrito = carrito;
+
     }
 
-    public Date getFecha() {
+    public LocalDateTime getFecha() {
         return fecha;
     }
 
-    public void setFecha(Date fecha) {
+    public void setFecha(LocalDateTime fecha) {
         this.fecha = fecha;
     }
 
@@ -58,7 +57,10 @@ public class Factura {
         return total;
     }
 
-    public void setTotal(double total) {
-        this.total = total;
+    // Método para formatear la fecha a una cadena
+    public String getFechaFormateada() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+        return fecha.format(formatter);
     }
+
 }

@@ -11,20 +11,22 @@ import modelos.Producto;
 
 public class ProductoRepositorio {
 
+
 	// Método para buscar un producto por modelo
 	public Producto buscarProducto(String modelo) throws SQLException {
-	    String consulta = "SELECT * FROM producto WHERE id = ?";
+	    String consulta = "SELECT * FROM producto WHERE modelo = ?";
 	    try (Connection conexion = ConfiguracionBaseDatos.getConnection();
 	         PreparedStatement statement = conexion.prepareStatement(consulta)) {
 	         
-	        statement.setString(3, modelo);
+	        statement.setString(1, modelo);
 	        try (ResultSet resultSet = statement.executeQuery()) {
 	            if (resultSet.next()) {
 	                return new Producto(
+                                
+                                
 	                    resultSet.getString("marca"),
 	                    resultSet.getString("modelo"),
 	                    resultSet.getInt("precio"),
-	                    resultSet.getInt("cantidad"),
 	                    resultSet.getString("descripcion")
 	                );
 	            } else {
@@ -33,6 +35,9 @@ public class ProductoRepositorio {
 	        }
 	    }
 	}
+        
+        
+    
 
 
 	// Método para guardar un nuevo producto
@@ -44,8 +49,7 @@ public class ProductoRepositorio {
 	        statement.setString(2, producto.getMarca());
 	        statement.setString(3, producto.getModelo());
 	        statement.setDouble(4, producto.getPrecio());
-	        statement.setInt(5, producto.getCantidad());
-	        statement.setString(6, producto.getDescripcion());
+	        statement.setString(5, producto.getDescripcion());
 	        statement.executeUpdate();
 	    }
 	}
@@ -59,8 +63,7 @@ public class ProductoRepositorio {
 	        statement.setString(2, producto.getMarca());
 	        statement.setString(3, producto.getModelo());
 	        statement.setDouble(4, producto.getPrecio());
-	        statement.setInt(5, producto.getCantidad());
-	        statement.setString(6, producto.getDescripcion());
+	        statement.setString(5, producto.getDescripcion());
 	        
 	        statement.executeUpdate();
 	    }
@@ -92,7 +95,6 @@ public class ProductoRepositorio {
 	                    resultSet.getString("marca"),
 	                    resultSet.getString("modelo"),
 	                    resultSet.getInt("precio"),
-	                    resultSet.getInt("cantidad"),
 	                    resultSet.getString("descripcion")
 	                );
                         productos.add(producto);
@@ -103,4 +105,5 @@ public class ProductoRepositorio {
         }
         
         
+
 }

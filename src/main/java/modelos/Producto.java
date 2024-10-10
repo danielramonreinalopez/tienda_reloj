@@ -1,28 +1,26 @@
 package modelos;
 
 public class Producto {
-    private int codigo; // Asegúrate de incluir el codigo
+    private int codigo;
     private String marca;
     private String modelo;
-    private int precio; // Cambiado a double
-    private int cantidad; // Se mantiene cantidad
+    private int precio; // Cambiado a double // Se mantiene cantidad
     private String descripcion;
 
     // Constructor para crear un Producto con codigo 
-    public Producto(int id, String marca, String modelo, int precio, int cantidad, String descripcion) {
+    public Producto(int id, String marca, String modelo, int precio, String descripcion) {
         this.codigo = id;
         this.marca = marca;
         this.modelo = modelo;
         this.precio = precio;
-        this.cantidad = cantidad;
-        this.cantidad = cantidad;
+        this.descripcion = descripcion;
     }
+
     //  Constructor para crear un producto sin codigo
-    public Producto( String marca, String modelo, int precio, int cantidad, String descripcion) {
+    public Producto( String marca, String modelo, int precio, String descripcion) {
         this.marca = marca;
         this.modelo = modelo;
         this.precio = precio;
-        this.cantidad = cantidad;
         this.descripcion = descripcion;
     }
 
@@ -36,7 +34,7 @@ public class Producto {
     }
 
     public String getMarca() {
-        return marca; // Devuelve la marca del producto
+        return marca;
     }
 
     public void setMarca(String marca) {
@@ -44,12 +42,13 @@ public class Producto {
     }
 
     public String getModelo() {
-        return modelo; // Devuelve el modelo del producto
+        return modelo;
     }
 
     public void setModelo(String modelo) {
         this.modelo = modelo;
     }
+
 
     public int getPrecio() {
         return precio; // Cambiado a double
@@ -59,23 +58,15 @@ public class Producto {
         this.precio = precio;
     }
 
-    public int getCantidad() {
-        return cantidad;
-    }
-
-    public void setCantidad(int cantidad) {
-        this.cantidad = cantidad;
-    }
-    
     public String getDescripcion() {
-		return descripcion;
-	}
-    
-    public void setDescripcion() {
-    	this.descripcion = descripcion;
+        return descripcion;
     }
 
-    // Método toString para mostrar información del producto
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    // usamos un metodo toString para mostrar información del producto
     @Override
     public String toString() {
         return codigo + "/ Marca: " + marca + "/ Modelo: " + modelo + "/ Precio: " + precio + "/ Descripción: " + descripcion;
@@ -84,5 +75,4 @@ public class Producto {
     public String modeloYValor() {
         return codigo + "/ Modelo: " + modelo + "/ Precio: " + precio;
     }
-
 }

@@ -55,7 +55,7 @@ public class VentanaCliente extends javax.swing.JFrame {
     
     private void llenarTablaProducto() throws SQLException{
         DefaultTableModel model = new DefaultTableModel();
-        model.setColumnIdentifiers(new Object[] {"ID", "Marca", "Modelo", "Precio", "Cantidad"});
+        model.setColumnIdentifiers(new Object[] {"ID", "Marca", "Modelo", "Precio"});
         productos = controlador.obtenerProductos();
         for(int i = 0; i < productos.size(); i++){
             model.addRow(new Object[]{
@@ -63,7 +63,6 @@ public class VentanaCliente extends javax.swing.JFrame {
                 productos.get(i).getMarca(),
                 productos.get(i).getModelo(),
                 productos.get(i).getPrecio(),
-                productos.get(i).getCantidad()
             });
         }
         tblProducto.setModel(model);
@@ -173,6 +172,11 @@ public class VentanaCliente extends javax.swing.JFrame {
         });
 
         cbFiltro.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        cbFiltro.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbFiltroActionPerformed(evt);
+            }
+        });
 
         cbOpcioonesFiltrado.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
@@ -356,6 +360,7 @@ public class VentanaCliente extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
         // TODO add your handling code here:
         int codigo = Integer.parseInt(txtIdProducto.getText());
@@ -414,6 +419,12 @@ public class VentanaCliente extends javax.swing.JFrame {
             }
         });
     }
+    private void cbFiltroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbFiltroActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_cbFiltroActionPerformed
+
+    
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
