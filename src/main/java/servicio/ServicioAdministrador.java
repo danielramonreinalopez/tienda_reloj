@@ -16,7 +16,7 @@ import modelos.Cliente;
  */
 public class ServicioAdministrador {
     
-    AdministradorRepositorio admRepo;
+    AdministradorRepositorio admRepo = new AdministradorRepositorio();
     
 //    public boolean validarSiExiste(String correo, String contraseña){ //throw SQLException {
 //        try{

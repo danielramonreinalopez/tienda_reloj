@@ -6,6 +6,7 @@ package vistas;
 
 import controlador.ControladorInicio;
 import vistas.VentanaCliente;
+import vistas.VentanaRegistro;
 import excepcion.InvalidoException;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
@@ -43,6 +44,7 @@ public class VentanaInicio extends javax.swing.JFrame {
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         btnIngresar = new javax.swing.JButton();
+        btnRegistrar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -56,6 +58,13 @@ public class VentanaInicio extends javax.swing.JFrame {
         btnIngresar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnIngresarActionPerformed(evt);
+            }
+        });
+
+        btnRegistrar.setText("Registrar");
+        btnRegistrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegistrarActionPerformed(evt);
             }
         });
 
@@ -76,6 +85,10 @@ public class VentanaInicio extends javax.swing.JFrame {
                         .addComponent(txtContraseña, javax.swing.GroupLayout.DEFAULT_SIZE, 152, Short.MAX_VALUE))
                     .addComponent(btnIngresar, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(90, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnRegistrar)
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -92,7 +105,9 @@ public class VentanaInicio extends javax.swing.JFrame {
                     .addComponent(jLabel2))
                 .addGap(33, 33, 33)
                 .addComponent(btnIngresar)
-                .addContainerGap(56, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                .addComponent(btnRegistrar)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -115,18 +130,23 @@ public class VentanaInicio extends javax.swing.JFrame {
         String contraseña = txtContraseña.getText();
         try{
             boolean aux = controlador.iniciarSesion(correo, contraseña);
-            if(aux != false){
+            if(aux){
                 VentanaCliente vc = new VentanaCliente();
                 vc.setVisible(true);
                 this.dispose();
             }
-            JOptionPane.showMessageDialog(null, "aux es falso");
         }catch(SQLException e){
             JOptionPane.showMessageDialog(null, "Error en la coneccion" + e.getMessage());
         }catch(InvalidoException e){
             JOptionPane.showMessageDialog(null, "Error de tipo de dato" + e.getMessage());
         }
     }//GEN-LAST:event_btnIngresarActionPerformed
+
+    private void btnRegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarActionPerformed
+        VentanaRegistro vr = new VentanaRegistro();
+        vr.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnRegistrarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -166,6 +186,7 @@ public class VentanaInicio extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnIngresar;
+    private javax.swing.JButton btnRegistrar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

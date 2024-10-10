@@ -11,6 +11,7 @@ import excepcion.InvalidoException;
 public class ServicioCliente {
     private ClienteRepositorio clienteRepositorio;
     private Carrito carrito;
+    
 
     public ServicioCliente() {
         clienteRepositorio = new ClienteRepositorio();
@@ -21,7 +22,7 @@ public class ServicioCliente {
         if (cliente == null) {
             throw new InvalidoException(ErrorTipo.ERROR_INICIO_SESION_CLIENTE);
         }else{
-            if(cliente.getContrasenia() == contrasenia){
+            if(cliente.getContrasenia().equals( contrasenia)){
                 return cliente;
             }
         }
@@ -29,15 +30,15 @@ public class ServicioCliente {
         return null;
     }
 
-    public void registrarCliente(Cliente cliente) throws SQLException, InvalidoException {
-        try {
-            // Verifica si el correo electrónico ya está registrado
-            if (clienteRepositorio.buscarCliente(cliente.getCorreo()) != null) {
-                throw new InvalidoException(ErrorTipo.ERROR_CLIENTE_EXISTE);
-            }
+    public boolean registrarCliente(Cliente cliente) throws SQLException, InvalidoException {
+        String correo = cliente.getCorreo();
+        Cliente aux = clienteRepositorio.buscarCliente(correo);
+        if(aux != null){
+            System.out.println("Cliente existente");
+            return false;
+        }else{
             clienteRepositorio.guardarCliente(cliente);
-        } catch (SQLException e) {
-            throw new InvalidoException(ErrorTipo.ERROR_REGISTRO_CLIENTE);
+            return true;
         }
     }
 }

@@ -9,6 +9,8 @@ public class Cliente extends Usuario {
     	this.direccion = direccion;
     }
     
+    
+    
     public String getDireccion() {
         return direccion;
     }
