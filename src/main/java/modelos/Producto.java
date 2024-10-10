@@ -16,6 +16,7 @@ public class Producto {
         this.precio = precio;
         this.cantidad = cantidad;
         this.cantidad = cantidad;
+        
     }
     //  Constructor para crear un producto sin codigo
     public Producto( String marca, String modelo, double precio, int cantidad, String descripcion) {
@@ -75,7 +76,7 @@ public class Producto {
     	this.descripcion = descripcion;
     }
 
-    // Método toString para mostrar información del producto
+    // usamos un metodo toString para mostrar información del producto
     @Override
     public String toString() {
         return codigo + "/ Marca: " + marca + "/ Modelo: " + modelo + "/ Precio: " + precio + "/ Descripción: " + descripcion;
