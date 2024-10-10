@@ -1,47 +1,64 @@
 package validador;
 
+import excepcion.ErrorTipo;
+import excepcion.InvalidoException;
 import modelos.Producto;
 
 public class ValidarProducto {
-	
-	public static boolean validarId(int id) {
-        // Validamos que el id sea mayor a 0
-        return id > 0;
+
+    // Validar el código del producto
+    public static void validarCodigo(int codigo) throws InvalidoException {
+        if (codigo <= 0) {
+            throw new InvalidoException(ErrorTipo.CODIGO_INVALIDO);
+        }
     }
 
-    public static boolean validarMarca(String marca) {
-        // Validamos que la marca no esté vacía
-        return marca != null && !marca.trim().isEmpty();
+    // Validar la marca del producto
+    public static void validarMarca(String marca) throws InvalidoException {
+        if (marca == null || marca.isBlank()) {
+            throw new InvalidoException(ErrorTipo.MARCA_INVALIDA);
+        }
     }
 
-    public static boolean validarModelo(String modelo) {
-        // Validamos que el modelo no esté vacío
-        return modelo != null && !modelo.trim().isEmpty();
+    // Validar el modelo del producto
+    public static void validarModelo(String modelo) throws InvalidoException {
+        if (modelo == null || modelo.isBlank()) {
+            throw new InvalidoException(ErrorTipo.MODELO_INVALIDO);
+        }
     }
 
-    public static boolean validarPrecio(double precio) {
-        // Validamos que el precio sea mayor a 0
-        return precio > 0;
+    // Validar el precio del producto
+    public static void validarPrecio(double precio) throws InvalidoException {
+        if (precio <= 0) {
+            throw new InvalidoException(ErrorTipo.PRECIO_INVALIDO);
+        }
     }
 
-    public static boolean validarCantidad(int cantidad) {
-        // Validamos que la cantidad sea mayor o igual a 0 (permitimos stock 0)
-        return cantidad >= 0;
+    // Validar la descripción del producto
+    public static void validarDescripcion(String descripcion) throws InvalidoException {
+        if (descripcion == null || descripcion.isBlank()) {
+            throw new InvalidoException(ErrorTipo.DESCRIPCION_INVALIDA);
+        }
     }
 
-    public static boolean validarDescripcion(String descripcion) {
-        // Validamos que la descripción no esté vacía
-        return descripcion != null && !descripcion.trim().isEmpty();
+    // Validar todos los campos del producto lanzando excepciones
+    public static void validarProductoConExcepciones(Producto producto) throws InvalidoException {
+        validarCodigo(producto.getCodigo());
+        validarMarca(producto.getMarca());
+        validarModelo(producto.getModelo());
+        validarPrecio(producto.getPrecio());
+        validarDescripcion(producto.getDescripcion());
     }
 
+    // Método que valida un producto y devuelve true o false (versión booleana)
     public static boolean validarProducto(Producto producto) {
-        // Validamos todos los campos del producto
-        return validarId(producto.getCodigo()) &&
-               validarMarca(producto.getMarca()) &&
-               validarModelo(producto.getModelo()) &&
-               validarPrecio(producto.getPrecio()) &&
-               validarCantidad(producto.getCantidad()) &&
-               validarDescripcion(producto.getDescripcion());
+        // Verificar que el producto no sea nulo y sus atributos sean válidos
+        if (producto == null) return false;
+        
+        return producto.getCodigo() > 0 &&
+               producto.getMarca() != null && !producto.getMarca().isBlank() &&
+               producto.getModelo() != null && !producto.getModelo().isBlank() &&
+               producto.getPrecio() > 0 &&
+               producto.getDescripcion() != null && !producto.getDescripcion().isBlank();
     }
-
 }

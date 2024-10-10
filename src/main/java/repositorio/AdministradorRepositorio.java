@@ -78,7 +78,7 @@ public class AdministradorRepositorio {
 	            statement.executeUpdate();
 			}
 		} else {
-			throw new InvalidoException(ErrorTipo.ERROR_ADMINISTRADOR_NO_ECONTRADO);
+			throw new InvalidoException(ErrorTipo.ERROR_ADMINISTRADOR_NO_ENCONTRADO);
 		}
 	}
 
@@ -97,7 +97,7 @@ public class AdministradorRepositorio {
 	        }
 	    } else {
 	        // Si no se encuentra el administrador, lanzar la excepción personalizada
-	        throw new InvalidoException(ErrorTipo.ERROR_ADMINISTRADOR_NO_ECONTRADO);
+	        throw new InvalidoException(ErrorTipo.ERROR_ADMINISTRADOR_NO_ENCONTRADO);
 	    }
 	}
 	
