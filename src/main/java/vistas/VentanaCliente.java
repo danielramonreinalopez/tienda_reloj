@@ -4,17 +4,29 @@
  */
 package vistas;
 
+import modelos.Cliente;
+import modelos.Producto;
+import controlador.ControladorCliente;
+import java.util.ArrayList;
+
 /**
  *
  * @author IVAN
  */
 public class VentanaCliente extends javax.swing.JFrame {
-
+    
+    ArrayList<Producto> productos;
     /**
      * Creates new form VentanaCliente
      */
     public VentanaCliente() {
         initComponents();
+        setLocationRelativeTo(this);
+        productos = new ArrayList<>();
+    }
+    
+    private void llenartablaProducto(){
+        
     }
 
     /**
