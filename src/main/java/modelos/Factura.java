@@ -1,35 +1,31 @@
 package modelos;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class Factura {
-    private int id;
     private Cliente cliente;
-    private List<Producto> producto;
-    private Date fecha;
+    private List<Producto> productos;
+    private LocalDateTime fecha;
     private double total;
 
-
-    // Constructor que incluye todos los campos, incluido el id
-    public Factura( Date fecha, double total,Cliente cliente, List<Producto> producto) {
-    	this.fecha = fecha;
-        this.total = total;
-    	this.cliente = cliente;
-        this.producto = producto;
+    // Constructor que incluye todos los campos excepto el total
+    public Factura(Cliente cliente, List<Producto> productos, LocalDateTime fecha) {
+        this.cliente = cliente;
+        this.productos = productos;
+        this.fecha = fecha;
+        this.total = calcularTotal(); // Calcula el total automáticamente
     }
 
-   
+    // Método para calcular automáticamente el total sumando los precios de los productos
+    private double calcularTotal() {
+        return productos.stream()
+                .mapToDouble(Producto::getPrecio)
+                .sum();
+    }
 
     // Getters y Setters
-   /* public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-*/
     public Cliente getCliente() {
         return cliente;
     }
@@ -38,19 +34,20 @@ public class Factura {
         this.cliente = cliente;
     }
 
-    public List<Producto> getProducto() {
-        return producto;
+    public List<Producto> getProductos() {
+        return productos;
     }
 
-    public void setProducto(List<Producto> producto) {
-        this.producto = producto;
+    public void setProductos(List<Producto> productos) {
+        this.productos = productos;
+        this.total = calcularTotal(); // Recalcula el total al cambiar la lista de productos
     }
 
-    public Date getFecha() {
+    public LocalDateTime getFecha() {
         return fecha;
     }
 
-    public void setFecha(Date fecha) {
+    public void setFecha(LocalDateTime fecha) {
         this.fecha = fecha;
     }
 
@@ -58,7 +55,10 @@ public class Factura {
         return total;
     }
 
-    public void setTotal(double total) {
-        this.total = total;
+    // Método para formatear la fecha a una cadena
+    public String getFechaFormateada() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+        return fecha.format(formatter);
     }
+
 }

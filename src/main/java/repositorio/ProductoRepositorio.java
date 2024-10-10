@@ -11,6 +11,7 @@ import modelos.Producto;
 
 public class ProductoRepositorio {
 
+
 	// Método para buscar un producto por modelo
 	public Producto buscarProducto(String modelo) throws SQLException {
 	    String consulta = "SELECT * FROM producto WHERE modelo = ?";
@@ -22,11 +23,10 @@ public class ProductoRepositorio {
 	            if (resultSet.next()) {
 	                return new Producto(
                                 
-                            resultSet.getInt("id"),    
+                                
 	                    resultSet.getString("marca"),
 	                    resultSet.getString("modelo"),
 	                    resultSet.getInt("precio"),
-	                    resultSet.getInt("cantidad"),
 	                    resultSet.getString("descripcion")
 	                );
 	            } else {
@@ -62,11 +62,10 @@ public List<Producto> filtrarProductos(String criterio) throws SQLException {
         try (ResultSet resultSet = statement.executeQuery()) {
             while (resultSet.next()) {
                 Producto producto = new Producto(
-                    resultSet.getInt("id"),
+                   
                     resultSet.getString("marca"),
                     resultSet.getString("modelo"),
-                    resultSet.getDouble("precio"),
-                    resultSet.getInt("cantidad"),
+                    resultSet.getDouble("precio"),                    
                     resultSet.getString("descripcion")
                 );
                 productosFiltrados.add(producto);
@@ -76,50 +75,61 @@ public List<Producto> filtrarProductos(String criterio) throws SQLException {
     return productosFiltrados;
 }
 
+  
 
+    // Método para guardar un nuevo producto
+    public void guardarProducto(Producto producto) throws SQLException {
+        String consulta = "INSERT INTO producto (marca, modelo, precio, descripcion) VALUES (?, ?, ?, ?)";
+        try (Connection conexion = ConfiguracionBaseDatos.getConnection();
+             PreparedStatement statement = conexion.prepareStatement(consulta)) {
+             
+            statement.setString(1, producto.getMarca());
+            statement.setString(2, producto.getModelo());
+            statement.setDouble(3, producto.getPrecio());
+            statement.setString(4, producto.getDescripcion());
+            statement.executeUpdate();
+        }
+    }
 
-	// Método para guardar un nuevo producto
-	public void guardarProducto(Producto producto) throws SQLException {
-	    String consulta = "INSERT INTO producto (marca, modelo, precio, cantidad, descripcion) VALUES (?, ?, ?, ?, ?)";
-	    try (Connection conexion = ConfiguracionBaseDatos.getConnection();
-	         PreparedStatement statement = conexion.prepareStatement(consulta)) {
-	         
-	        statement.setString(2, producto.getMarca());
-	        statement.setString(3, producto.getModelo());
-	        statement.setDouble(4, producto.getPrecio());
-	        statement.setInt(5, producto.getCantidad());
-	        statement.setString(6, producto.getDescripcion());
-	        statement.executeUpdate();
-	    }
-	}
+    // Método para actualizar un producto existente
+    public void actualizarProducto(Producto producto) throws SQLException {
+        String consulta = "UPDATE producto SET marca = ?, modelo = ?, precio = ?, descripcion = ? WHERE modelo = ?";
+        try (Connection conexion = ConfiguracionBaseDatos.getConnection();
+             PreparedStatement statement = conexion.prepareStatement(consulta)) {
+             
+            statement.setString(1, producto.getMarca());
+            statement.setString(2, producto.getModelo());
+            statement.setDouble(3, producto.getPrecio());
+            statement.setString(4, producto.getDescripcion());
+            statement.setString(5, producto.getModelo()); // El modelo es usado como identificador
+            statement.executeUpdate();
+        }
+    }
 
-	// Método para actualizar un producto existente
-	public void actualizarProducto(Producto producto) throws SQLException {
-	    String consulta = "UPDATE producto SET marca = ?, modelo = ?, precio = ?, cantidad = ?, descripcion = ? ";
-	    try (Connection conexion = ConfiguracionBaseDatos.getConnection();
-	         PreparedStatement statement = conexion.prepareStatement(consulta)) {
-	         
-	        statement.setString(2, producto.getMarca());
-	        statement.setString(3, producto.getModelo());
-	        statement.setDouble(4, producto.getPrecio());
-	        statement.setInt(5, producto.getCantidad());
-	        statement.setString(6, producto.getDescripcion());
-	        
-	        statement.executeUpdate();
-	    }
-	}
-
-
-	// Método para eliminar un producto por ID
-	public void eliminarProducto(String modelo) throws SQLException {
-	    String consulta = "DELETE FROM producto WHERE id = ?";
-	    try (Connection conexion = ConfiguracionBaseDatos.getConnection();
-	         PreparedStatement statement = conexion.prepareStatement(consulta)) {
-	         
-	        statement.setString(3, modelo);
-	        statement.executeUpdate();
-	    }
-	}
-
-
+    // Método para eliminar un producto por modelo
+    public void eliminarProducto(String modelo) throws SQLException {
+        String consulta = "DELETE FROM producto WHERE modelo = ?";
+        try (Connection conexion = ConfiguracionBaseDatos.getConnection();
+             PreparedStatement statement = conexion.prepareStatement(consulta)) {
+             
+            statement.setString(1, modelo); // El parámetro debe ser 1
+            statement.executeUpdate();
+        }
+    }
+    
+    
+    // Método para contar la cantidad total de productos en la base de datos
+    public int contarProductos() throws SQLException {
+        String consulta = "SELECT COUNT(*) AS total FROM producto";
+        try (Connection conexion = ConfiguracionBaseDatos.getConnection();
+             PreparedStatement statement = conexion.prepareStatement(consulta);
+             ResultSet resultSet = statement.executeQuery()) {
+             
+            if (resultSet.next()) {
+                return resultSet.getInt("total");
+            } else {
+                return 0;
+            }
+        }
+    }
 }
