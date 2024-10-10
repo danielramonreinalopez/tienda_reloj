@@ -4,95 +4,98 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp; // Para manejar LocalDateTime en la base de datos
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import conexionBD.ConfiguracionBaseDatos;
+import excepcion.ErrorTipo;
 import modelos.Cliente;
 import modelos.Factura;
 import modelos.Producto;
+import excepcion.InvalidoException;
 
 public class FacturaRepositorio {
 
+    private final ClienteRepositorio clienteRepositorio;
+
+    // Constructor para inyectar el repositorio de Cliente
+    public FacturaRepositorio(ClienteRepositorio clienteRepositorio) {
+        this.clienteRepositorio = clienteRepositorio;
+    }
+
     // Método para guardar una nueva factura y relacionarla con múltiples productos
     public void guardarFactura(Factura factura) throws SQLException {
-        String consultaFactura = "INSERT INTO factura (fecha, total, cliente_id) VALUES (?, ?, ?)";
+        String consultaFactura = "INSERT INTO factura (fecha, total, cliente_correo) VALUES (?, ?, ?)";
         try (Connection conexion = ConfiguracionBaseDatos.getConnection();
-             PreparedStatement statementFactura = conexion.prepareStatement(consultaFactura, PreparedStatement.RETURN_GENERATED_KEYS)) {
+             PreparedStatement statementFactura = conexion.prepareStatement(consultaFactura)) {
 
-            // Convertir LocalDateTime a Timestamp para la base de datos
-            statementFactura.setTimestamp(1, Timestamp.valueOf(factura.getFecha())); 
+            statementFactura.setTimestamp(1, Timestamp.valueOf(factura.getFecha()));
             statementFactura.setDouble(2, factura.getTotal());
-            statementFactura.setString(3, factura.getCliente().getCorreo()); // Usamos el correo como ID del cliente
-            
-            // Ejecutar la consulta para insertar la factura y obtener su ID generado
+            statementFactura.setString(3, factura.getCliente().getCorreo()); // Usar correo como identificador
             statementFactura.executeUpdate();
 
-            int facturaId = 0;
-            try (ResultSet generatedKeys = statementFactura.getGeneratedKeys()) {
-                if (generatedKeys.next()) {
-                    facturaId = generatedKeys.getInt(1); // Obtener el ID de la factura generada
-                }
-            }
+            // Guardar los productos relacionados
+            guardarProductosRelacionados(factura.getCliente().getCorreo(), factura.getProductos(), conexion);
+        }
+    }
 
-            // Guardar cada producto relacionado con la factura en la tabla intermedia factura_producto
-            String consultaProducto = "INSERT INTO factura_producto (factura_id, producto_id) VALUES (?, ?)";
-            try (PreparedStatement statementProducto = conexion.prepareStatement(consultaProducto)) {
-                for (Producto producto : factura.getProductos()) {
-                    statementProducto.setInt(1, facturaId); // Establecer el ID de la factura generada
-                    statementProducto.setInt(2, producto.getCodigo()); // ID del producto
-                    statementProducto.executeUpdate(); // Guardar la relación en la tabla factura_producto
-                }
+    // Método auxiliar para guardar la relación de productos con la factura usando el correo del cliente
+    private void guardarProductosRelacionados(String clienteCorreo, List<Producto> productos, Connection conexion) throws SQLException {
+        String consultaProducto = "INSERT INTO factura_producto (cliente_correo, producto_id) VALUES (?, ?)";
+        try (PreparedStatement statementProducto = conexion.prepareStatement(consultaProducto)) {
+            for (Producto producto : productos) {
+                statementProducto.setString(1, clienteCorreo); // Usar correo en lugar de ID de factura
+                statementProducto.setInt(2, producto.getCodigo());
+                statementProducto.executeUpdate();
             }
         }
     }
 
-    // Método para buscar facturas usando el ID del cliente y traer productos asociados
-    public List<Factura> buscarFacturasPorCliente(Cliente cliente) throws SQLException {
-        String clienteId = cliente.getCorreo(); // Usar el correo como identificador del cliente
+    // Método para buscar facturas por correo del cliente
+    public List<Factura> buscarFacturasPorCliente(String clienteCorreo) throws SQLException, InvalidoException {
+        // Reutilizamos el método buscarCliente del ClienteRepositorio
+        Cliente cliente = clienteRepositorio.buscarCliente(clienteCorreo);
 
-        String consultaFactura = "SELECT * FROM factura WHERE cliente_id = ?";
+        if (cliente == null) {
+            throw new InvalidoException( ErrorTipo.CLIENTE_NO_ENCONTRADO);
+        }
+
+        String consultaFactura = "SELECT * FROM factura WHERE cliente_correo = ?";
         List<Factura> facturas = new ArrayList<>();
 
         try (Connection conexion = ConfiguracionBaseDatos.getConnection();
              PreparedStatement statement = conexion.prepareStatement(consultaFactura)) {
 
-            // Establecer el correo del cliente en la consulta
-            statement.setString(1, clienteId);
+            statement.setString(1, clienteCorreo);
 
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
-                    int facturaId = resultSet.getInt("id");
-                    LocalDateTime fecha = resultSet.getTimestamp("fecha").toLocalDateTime(); // Convertir a LocalDateTime
+                    LocalDateTime fecha = resultSet.getTimestamp("fecha").toLocalDateTime();
                     double total = resultSet.getDouble("total");
 
-                    // Buscar todos los productos asociados a esta factura
-                    List<Producto> productos = buscarProductosPorFacturaId(facturaId);
+                    List<Producto> productos = buscarProductosPorClienteCorreo(clienteCorreo, conexion);
 
-                    // Crear el objeto Factura y añadirlo a la lista
+                    // Crear una nueva factura y agregarla a la lista
                     Factura factura = new Factura(cliente, productos, fecha);
                     facturas.add(factura);
                 }
             }
         }
-        return facturas; // Devolver todas las facturas asociadas al cliente
+        return facturas;
     }
 
-    // Método auxiliar para buscar productos por el ID de la factura en la tabla intermedia factura_producto
-    private List<Producto> buscarProductosPorFacturaId(int facturaId) throws SQLException {
+    // Método auxiliar para buscar productos asociados a una factura usando el correo del cliente
+    private List<Producto> buscarProductosPorClienteCorreo(String clienteCorreo, Connection conexion) throws SQLException {
         String consultaProducto = "SELECT p.id, p.marca, p.modelo, p.precio, p.descripcion " +
                                   "FROM producto p " +
                                   "JOIN factura_producto fp ON p.id = fp.producto_id " +
-                                  "WHERE fp.factura_id = ?";
+                                  "WHERE fp.cliente_correo = ?";
         List<Producto> productos = new ArrayList<>();
 
-        try (Connection conexion = ConfiguracionBaseDatos.getConnection();
-             PreparedStatement statement = conexion.prepareStatement(consultaProducto)) {
-
-            statement.setInt(1, facturaId); // Establecer el ID de la factura en la consulta
+        try (PreparedStatement statement = conexion.prepareStatement(consultaProducto)) {
+            statement.setString(1, clienteCorreo);
 
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
@@ -100,112 +103,58 @@ public class FacturaRepositorio {
                         resultSet.getString("marca"),
                         resultSet.getString("modelo"),
                         resultSet.getDouble("precio"),
-                        resultSet.getString("descripcion") // Eliminado el campo cantidad
+                        resultSet.getString("descripcion")
                     );
-                    productos.add(producto); // Añadir cada producto a la lista
+                    productos.add(producto);
                 }
             }
         }
-        return productos; // Devolver la lista de productos encontrados para la factura
+        return productos;
     }
-    
-    
+
     // Método para eliminar todas las facturas de un cliente por su correo
-    public void eliminarFacturasPorClienteCorreo(String correoCliente) throws SQLException {
-        // Primero, obtenemos los IDs de las facturas asociadas al cliente
-        String consultaFacturas = "SELECT id FROM factura WHERE cliente_id = ?";
-        try (Connection conexion = ConfiguracionBaseDatos.getConnection();
-             PreparedStatement statementFacturas = conexion.prepareStatement(consultaFacturas)) {
+    public void eliminarFacturasPorClienteCorreo(String correoCliente) throws SQLException, InvalidoException {
+        // Reutilizamos el método buscarCliente del ClienteRepositorio
+        Cliente cliente = clienteRepositorio.buscarCliente(correoCliente);
 
-            // Establecemos el correo del cliente en la consulta
-            statementFacturas.setString(1, correoCliente);
-
-            try (ResultSet resultSet = statementFacturas.executeQuery()) {
-                // Recorremos todas las facturas asociadas al cliente
-                while (resultSet.next()) {
-                    int facturaId = resultSet.getInt("id");
-                    // Eliminamos cada factura usando su ID
-                    eliminarFactura(facturaId);
-                }
-            }
+        if (cliente == null) {
+            throw new InvalidoException(ErrorTipo.CLIENTE_NO_ENCONTRADO);
         }
-    }
-    
-    // Método para eliminar una factura por su ID
-    public void eliminarFactura(int facturaId) throws SQLException {
-        // Primero, eliminamos las relaciones en la tabla intermedia factura_producto
-        String consultaEliminarRelacion = "DELETE FROM factura_producto WHERE factura_id = ?";
-        
+
+        // Primero eliminar las relaciones de productos
+        String consultaEliminarRelacion = "DELETE FROM factura_producto WHERE cliente_correo = ?";
         try (Connection conexion = ConfiguracionBaseDatos.getConnection();
              PreparedStatement statementRelacion = conexion.prepareStatement(consultaEliminarRelacion)) {
 
-            // Establecemos el ID de la factura a eliminar en la tabla intermedia
-            statementRelacion.setInt(1, facturaId);
+            statementRelacion.setString(1, correoCliente);
             statementRelacion.executeUpdate();
         }
 
-        // Luego, eliminamos la factura de la tabla factura
-        String consultaEliminarFactura = "DELETE FROM factura WHERE id = ?";
-
-        try (Connection conexion = ConfiguracionBaseDatos.getConnection();
-             PreparedStatement statementFactura = conexion.prepareStatement(consultaEliminarFactura)) {
-
-            // Establecemos el ID de la factura a eliminar
-            statementFactura.setInt(1, facturaId);
+        // Luego, eliminar las facturas del cliente
+        String consultaEliminarFactura = "DELETE FROM factura WHERE cliente_correo = ?";
+        try (PreparedStatement statementFactura = ConfiguracionBaseDatos.getConnection().prepareStatement(consultaEliminarFactura)) {
+            statementFactura.setString(1, correoCliente);
             statementFactura.executeUpdate();
         }
     }
-    
-    
-    // Método para actualizar una factura existente
-    public void actualizarFactura(Factura factura) throws SQLException {
-        String consulta = "UPDATE factura SET fecha = ?, total = ?, cliente_id = ? WHERE id = ?";
 
+    // Método para actualizar una factura
+    public void actualizarFactura(Factura factura) throws SQLException, InvalidoException {
+        // Reutilizamos el método buscarCliente del ClienteRepositorio
+        Cliente cliente = clienteRepositorio.buscarCliente(factura.getCliente().getCorreo());
+
+        if (cliente == null) {
+            throw new InvalidoException(ErrorTipo.CLIENTE_NO_ENCONTRADO);
+        }
+
+        String consulta = "UPDATE factura SET fecha = ?, total = ? WHERE cliente_correo = ?";
         try (Connection conexion = ConfiguracionBaseDatos.getConnection();
              PreparedStatement statement = conexion.prepareStatement(consulta)) {
 
-            // Establecer los valores para la actualización
-            statement.setTimestamp(1, java.sql.Timestamp.valueOf(factura.getFecha())); // Fecha de la factura
-            statement.setDouble(2, factura.getTotal()); // Total de la factura
-            statement.setString(3, factura.getCliente().getCorreo()); // ID del cliente (correo)
-            
-            // Ejecutar la actualización
+            statement.setTimestamp(1, Timestamp.valueOf(factura.getFecha()));
+            statement.setDouble(2, factura.getTotal());
+            statement.setString(3, factura.getCliente().getCorreo()); // Usar correo del cliente
             statement.executeUpdate();
         }
-    }
-    
-    
-    // Método para buscar facturas por cliente (usando el cliente_id o correo)
-    public List<Factura> buscarFacturasPorCliente(String clienteCorreo) throws SQLException {
-        String consulta = "SELECT * FROM factura WHERE cliente_id = ?";
-        List<Factura> facturas = new ArrayList<>();
-
-        try (Connection conexion = ConfiguracionBaseDatos.getConnection();
-             PreparedStatement statement = conexion.prepareStatement(consulta)) {
-
-            // Establecer el correo del cliente como parámetro
-            statement.setString(1, clienteCorreo);
-
-            try (ResultSet resultSet = statement.executeQuery()) {
-                while (resultSet.next()) {
-                    // Crear una nueva factura para cada resultado encontrado
-                    Factura factura = new Factura(
-                        resultSet.getInt("id"),
-                        obtenerClientePorId(resultSet.getString("cliente_id")),
-                        null, // Aquí puedes obtener los productos asociados si es necesario
-                        resultSet.getTimestamp("fecha").toLocalDateTime(),
-                        resultSet.getDouble("total")
-                    );
-                    facturas.add(factura); // Añadir cada factura a la lista
-                }
-            }
-        }
-        return facturas; // Devolver la lista de facturas asociadas al cliente
-    }
-
-    // Método auxiliar para obtener el cliente por su ID o correo (puedes usar tu propio ClienteRepositorio)
-    private Cliente obtenerClientePorId(String clienteId) throws SQLException {
-        // Implementar lógica para obtener el cliente por su ID o correo (consulta al ClienteRepositorio)
-        return new Cliente(); // Sustituir con la lógica real
     }
 }

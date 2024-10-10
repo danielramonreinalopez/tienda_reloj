@@ -4,15 +4,15 @@ import excepcion.InvalidoException;
 import modelos.Factura;
 import repositorio.FacturaRepositorio;
 import validador.ValidarFactura;
-
 import java.sql.SQLException;
 
 public class ServicioFactura {
 
-    private FacturaRepositorio facturaRepositorio;
+    private final FacturaRepositorio facturaRepositorio;
 
-    public ServicioFactura() {
-        this.facturaRepositorio = new FacturaRepositorio(); // Instancia del repositorio
+    // Constructor que inyecta el repositorio de facturas
+    public ServicioFactura(FacturaRepositorio facturaRepositorio) {
+        this.facturaRepositorio = facturaRepositorio;
     }
 
     // Método para agregar una nueva factura
@@ -43,30 +43,28 @@ public class ServicioFactura {
         }
     }
 
-    // Método para buscar una factura por el ID
-    public Factura buscarFactura(int idFactura) {
+    // Método para buscar facturas por correo del cliente
+    public void buscarFacturasPorCliente(String correoCliente) {
         try {
-            Factura factura = facturaRepositorio.buscarFacturas(idFactura);
-            if (factura != null) {
-                System.out.println("Factura encontrada: " + factura);
-                return factura;
+            var facturas = facturaRepositorio.buscarFacturasPorCliente(correoCliente);
+            if (!facturas.isEmpty()) {
+                System.out.println("Facturas encontradas para el cliente " + correoCliente + ":");
+                facturas.forEach(System.out::println);
             } else {
-                System.out.println("Factura no encontrada.");
-                return null;
+                System.out.println("No se encontraron facturas para el cliente con correo: " + correoCliente);
             }
-        } catch (SQLException e) {
-            System.out.println("Error al buscar la factura: " + e.getMessage());
-            return null;
+        } catch (SQLException | InvalidoException e) {
+            System.out.println("Error al buscar las facturas: " + e.getMessage());
         }
     }
 
-    // Método para eliminar una factura por ID
-    public void eliminarFactura(int idFactura) {
+    // Método para eliminar todas las facturas de un cliente por su correo
+    public void eliminarFacturasPorClienteCorreo(String correoCliente) {
         try {
-            facturaRepositorio.eliminarFactura(idFactura);
-            System.out.println("Factura eliminada exitosamente.");
-        } catch (SQLException e) {
-            System.out.println("Error al eliminar la factura: " + e.getMessage());
+            facturaRepositorio.eliminarFacturasPorClienteCorreo(correoCliente);
+            System.out.println("Facturas eliminadas exitosamente para el cliente con correo: " + correoCliente);
+        } catch (SQLException | InvalidoException e) {
+            System.out.println("Error al eliminar las facturas: " + e.getMessage());
         }
     }
 }
