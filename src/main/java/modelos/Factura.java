@@ -6,17 +6,17 @@ import java.util.List;
 public class Factura {
     private int id;
     private Cliente cliente;
-    private List<Producto> producto;
+    private Carrito carrito;
     private Date fecha;
     private double total;
 
 
     // Constructor que incluye todos los campos, incluido el id
-    public Factura( Date fecha, double total,Cliente cliente, List<Producto> producto) {
+    public Factura( Date fecha, double total, Cliente cliente, Carrito carrito) {
     	this.fecha = fecha;
         this.total = total;
     	this.cliente = cliente;
-        this.producto = producto;
+        this.carrito = carrito;
     }
 
    
@@ -38,12 +38,12 @@ public class Factura {
         this.cliente = cliente;
     }
 
-    public List<Producto> getProducto() {
-        return producto;
+    public Carrito getCarrito() {
+        return carrito;
     }
 
-    public void setProducto(List<Producto> producto) {
-        this.producto = producto;
+    public void setCarrito(Carrito carrito) {
+        this.carrito = carrito;
     }
 
     public Date getFecha() {

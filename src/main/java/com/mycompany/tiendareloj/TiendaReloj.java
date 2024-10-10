@@ -5,10 +5,13 @@
 package com.mycompany.tiendareloj;
 
 import conexionBD.ConfiguracionBaseDatos;
+import controlador.ControladorCliente;
 import excepcion.InvalidoException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import modelos.Cliente;
+import modelos.Producto;
 import repositorio.ClienteRepositorio;
 import servicio.ServicioCliente;
 
@@ -67,23 +70,37 @@ public class TiendaReloj {
 
 
          //Prueba registrar cliente del servicioCliente
-         Cliente nuevoCliente = new Cliente("direccion", "Ivan", "Castillo", 123456789, "ivan@ejemplo.com", "345");
+//         Cliente nuevoCliente = new Cliente("direccion", "Ivan", "Castillo", 123456789, "ivan@ejemplo.com", "345");
+//
+//        try {
+//            // Registrar el cliente
+//            boolean respuesta = servicio.registrarCliente(nuevoCliente);
+//            if(respuesta){
+//                System.out.println("Cliente registrado exitosamente.");
+//            }else{
+//                System.out.println("Cliente existente");
+//            }
+//        } catch (InvalidoException e) {
+//            // Manejo de la excepción personalizada
+//            System.out.println("Error: " + e.getMessage());
+//        } catch (SQLException e) {
+//            // Manejo de la excepción de SQL
+//            System.out.println("Error en la conexión a la base de datos: " + e.getMessage());
+//        }
+     
+        
+        //pruba lista productos
+        ControladorCliente controladorCliente = new ControladorCliente();
 
         try {
-            // Registrar el cliente
-            boolean respuesta = servicio.registrarCliente(nuevoCliente);
-            if(respuesta){
-                System.out.println("Cliente registrado exitosamente.");
-            }else{
-                System.out.println("Cliente existente");
+            ArrayList<Producto> productos = controladorCliente.obtenerProductos();
+            // Imprimir los productos obtenidos
+            for (Producto producto : productos) {
+                System.out.println(producto);
             }
-        } catch (InvalidoException e) {
-            // Manejo de la excepción personalizada
-            System.out.println("Error: " + e.getMessage());
         } catch (SQLException e) {
-            // Manejo de la excepción de SQL
-            System.out.println("Error en la conexión a la base de datos: " + e.getMessage());
+            System.err.println("Error al obtener productos: " + e.getMessage());
         }
-        
     }
+        
 }

@@ -4,12 +4,12 @@ public class Producto {
     private int codigo; // Asegúrate de incluir el codigo
     private String marca;
     private String modelo;
-    private double precio; // Cambiado a double
+    private int precio; // Cambiado a double
     private int cantidad; // Se mantiene cantidad
     private String descripcion;
 
     // Constructor para crear un Producto con codigo 
-    public Producto(int id, String marca, String modelo, double precio, int cantidad, String descripcion) {
+    public Producto(int id, String marca, String modelo, int precio, int cantidad, String descripcion) {
         this.codigo = id;
         this.marca = marca;
         this.modelo = modelo;
@@ -18,7 +18,7 @@ public class Producto {
         this.cantidad = cantidad;
     }
     //  Constructor para crear un producto sin codigo
-    public Producto( String marca, String modelo, double precio, int cantidad, String descripcion) {
+    public Producto( String marca, String modelo, int precio, int cantidad, String descripcion) {
         this.marca = marca;
         this.modelo = modelo;
         this.precio = precio;
@@ -51,11 +51,11 @@ public class Producto {
         this.modelo = modelo;
     }
 
-    public double getPrecio() {
+    public int getPrecio() {
         return precio; // Cambiado a double
     }
 
-    public void setPrecio(double precio) {
+    public void setPrecio(int precio) {
         this.precio = precio;
     }
 

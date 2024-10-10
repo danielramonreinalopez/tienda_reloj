@@ -97,7 +97,7 @@ public class FacturaRepositorio {
                     Producto producto = new Producto(
                         resultSet.getString("marca"),
                         resultSet.getString("modelo"),
-                        resultSet.getDouble("precio"),
+                        resultSet.getInt("precio"),
                         resultSet.getInt("cantidad"),
                         resultSet.getString("descripcion")
                     );

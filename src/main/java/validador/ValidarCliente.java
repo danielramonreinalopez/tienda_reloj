@@ -22,7 +22,7 @@ public class ValidarCliente {
     public static boolean validarNumeroCelular(int numCelular) {
         // Validamos que el numero de celular tenga 10 dígitos
         String numCelularStr = String.valueOf(numCelular);
-        return numCelularStr.length() == 10;
+        return numCelularStr.length() == 12;
     }
 
     public static boolean validarCorreo(String correo) {

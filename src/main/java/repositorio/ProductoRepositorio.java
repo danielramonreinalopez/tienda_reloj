@@ -77,6 +77,30 @@ public class ProductoRepositorio {
 	        statement.executeUpdate();
 	    }
 	}
-
-
+        
+        public ArrayList<Producto> obtenerProductos() throws SQLException{
+            String consulta = "SELECT * FROM producto";
+            ArrayList<Producto> productos = new ArrayList<>();
+	    try (Connection conexion = ConfiguracionBaseDatos.getConnection();
+	         PreparedStatement statement = conexion.prepareStatement(consulta)) {
+	         
+	        try (ResultSet resultSet = statement.executeQuery()) {
+                    int contador = 1;
+	            while (resultSet.next()) {
+	                Producto producto = new Producto(
+                                contador++,
+	                    resultSet.getString("marca"),
+	                    resultSet.getString("modelo"),
+	                    resultSet.getInt("precio"),
+	                    resultSet.getInt("cantidad"),
+	                    resultSet.getString("descripcion")
+	                );
+                        productos.add(producto);
+	            }
+	        }
+                return productos;
+	    }
+        }
+        
+        
 }
