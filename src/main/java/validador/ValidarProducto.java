@@ -43,7 +43,6 @@ public class ValidarProducto {
 
     // Validar todos los campos del producto lanzando excepciones
     public static void validarProductoConExcepciones(Producto producto) throws InvalidoException {
-        validarCodigo(producto.getCodigo());
         validarMarca(producto.getMarca());
         validarModelo(producto.getModelo());
         validarPrecio(producto.getPrecio());

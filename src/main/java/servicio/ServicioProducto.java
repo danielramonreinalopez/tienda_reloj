@@ -15,39 +15,45 @@ public class ServicioProducto {
     }
    
     // Método para agregar un nuevo producto
-    public void agregarProducto(Producto producto) {
+    public boolean agregarProducto(Producto producto) {
         try {
             ValidarProducto.validarProductoConExcepciones(producto); // Cambiar a método con excepciones
             productoRepositorio.guardarProducto(producto);
             System.out.println("Producto agregado exitosamente.");
+            return true;
         } catch (InvalidoException e) {
             System.out.println("Error de validación: " + e.getMessage());
         } catch (SQLException e) {
             System.out.println("Error de base de datos: " + e.getMessage());
         }
+        return false;
     }
 
     // Método para eliminar un producto por modelo
-    public void eliminarProducto(String modelo) {
+    public boolean eliminarProducto(String modelo) {
         try {
             productoRepositorio.eliminarProducto(modelo);
             System.out.println("Producto eliminado exitosamente.");
+            return true;
         } catch (SQLException e) {
             System.out.println("Error al eliminar producto: " + e.getMessage());
         }
+        return false;
     }
 
    // Método para editar un producto existente
-    public void editarProducto(Producto producto) {
+    public boolean editarProducto(Producto producto) {
         try {
             ValidarProducto.validarProductoConExcepciones(producto); // Cambiar a método con excepciones
             productoRepositorio.actualizarProducto(producto);
             System.out.println("Producto actualizado exitosamente.");
+            return true;
         } catch (InvalidoException e) {
             System.out.println("Error de validación: " + e.getMessage());
         } catch (SQLException e) {
             System.out.println("Error de base de datos: " + e.getMessage());
         }
+        return false;
     }
 
     // Método para buscar un producto por modelo
@@ -68,14 +74,14 @@ public class ServicioProducto {
     }
 
     // Método para obtener la cantidad total de productos
-    public int cantidadProducto() {
-        try {
-            int total = productoRepositorio.contarProductos();
-            System.out.println("Cantidad total de productos: " + total);
-            return total;
-        } catch (SQLException e) {
-            System.out.println("Error al contar los productos: " + e.getMessage());
-            return 0;
-        }
-    }
+//    public int cantidadProducto() {
+//        try {
+//            int total = productoRepositorio.contarProductos();
+//            System.out.println("Cantidad total de productos: " + total);
+//            return total;
+//        } catch (SQLException e) {
+//            System.out.println("Error al contar los productos: " + e.getMessage());
+//            return 0;
+//        }
+//    }
 }

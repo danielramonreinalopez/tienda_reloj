@@ -129,11 +129,19 @@ public class VentanaInicio extends javax.swing.JFrame {
         String correo = txtCorreo.getText();
         String contraseña = txtContraseña.getText();
         try{
-            boolean aux = controlador.iniciarSesion(correo, contraseña);
-            if(aux){
+            int aux = controlador.iniciarSesion(correo, contraseña);
+            if(aux == 1){
                 VentanaCliente vc = new VentanaCliente();
                 vc.setVisible(true);
                 this.dispose();
+            }
+            if(aux == 2){
+                VentanaAdministrador va = new VentanaAdministrador();
+                va.setVisible(true);
+                this.dispose();
+            }
+            if(aux == 0){
+                JOptionPane.showMessageDialog(null, "Usuario O contraseña incorrectos");
             }
         }catch(SQLException e){
             JOptionPane.showMessageDialog(null, "Error en la coneccion" + e.getMessage());

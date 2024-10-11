@@ -42,28 +42,28 @@ public class ProductoRepositorio {
 
 	// Método para guardar un nuevo producto
 	public void guardarProducto(Producto producto) throws SQLException {
-	    String consulta = "INSERT INTO producto (marca, modelo, precio, cantidad, descripcion) VALUES (?, ?, ?, ?, ?)";
+	    String consulta = "INSERT INTO producto (marca, modelo, precio, descripcion) VALUES (?, ?, ?, ?)";
 	    try (Connection conexion = ConfiguracionBaseDatos.getConnection();
 	         PreparedStatement statement = conexion.prepareStatement(consulta)) {
 	         
-	        statement.setString(2, producto.getMarca());
-	        statement.setString(3, producto.getModelo());
-	        statement.setDouble(4, producto.getPrecio());
-	        statement.setString(5, producto.getDescripcion());
+	        statement.setString(1, producto.getMarca());
+	        statement.setString(2, producto.getModelo());
+	        statement.setDouble(3, producto.getPrecio());
+	        statement.setString(4, producto.getDescripcion());
 	        statement.executeUpdate();
 	    }
 	}
 
 	// Método para actualizar un producto existente
 	public void actualizarProducto(Producto producto) throws SQLException {
-	    String consulta = "UPDATE producto SET marca = ?, modelo = ?, precio = ?, cantidad = ?, descripcion = ? ";
+	    String consulta = "UPDATE producto SET WHERE marca = ?, modelo = ?, precio = ?, descripcion = ? ";
 	    try (Connection conexion = ConfiguracionBaseDatos.getConnection();
 	         PreparedStatement statement = conexion.prepareStatement(consulta)) {
 	         
-	        statement.setString(2, producto.getMarca());
-	        statement.setString(3, producto.getModelo());
-	        statement.setDouble(4, producto.getPrecio());
-	        statement.setString(5, producto.getDescripcion());
+	        statement.setString(1, producto.getMarca());
+	        statement.setString(2, producto.getModelo());
+	        statement.setDouble(3, producto.getPrecio());
+	        statement.setString(4, producto.getDescripcion());
 	        
 	        statement.executeUpdate();
 	    }
@@ -72,11 +72,11 @@ public class ProductoRepositorio {
 
 	// Método para eliminar un producto por ID
 	public void eliminarProducto(String modelo) throws SQLException {
-	    String consulta = "DELETE FROM producto WHERE id = ?";
+	    String consulta = "DELETE FROM producto WHERE modelo = ?";
 	    try (Connection conexion = ConfiguracionBaseDatos.getConnection();
 	         PreparedStatement statement = conexion.prepareStatement(consulta)) {
 	         
-	        statement.setString(3, modelo);
+	        statement.setString(1, modelo);
 	        statement.executeUpdate();
 	    }
 	}

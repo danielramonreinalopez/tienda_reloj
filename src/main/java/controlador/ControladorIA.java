@@ -26,32 +26,32 @@ public class ControladorIA {
     
    
    
-
-    public void buscarYGenerarContenido(String criterio) {
-        try {
-            List<Producto> productosFiltrados = repositorioIA.filtrarProductos(criterio); // Llamar al método
-            StringBuilder mensaje = new StringBuilder("Productos encontrados:\n");
-            
-            for (Producto producto : productosFiltrados) {
-                mensaje.append("Marca: ").append(producto.getMarca())
-                        .append(", Modelo: ").append(producto.getModelo())
-                        .append(", Precio: ").append(producto.getPrecio())
-                        .append(", Descripción: ").append(producto.getDescripcion())
-                        .append("\n");
-            }
-            
-            // Generar contenido usando la IA
-            String contenidoGenerado = repositorioIA.crearContenido(mensaje.toString());
-            System.out.println("Contenido generado: " + contenidoGenerado);
-            
-        } catch (SQLException e) {
-            System.out.println("Error al filtrar productos: " + e.getMessage());
-        }
-    }
-
-
-        public String crearContenido (String message){
-        return servIA.crearContenido(message);
-    } 
+//
+//    public void buscarYGenerarContenido(String criterio) {
+//        try {
+//            List<Producto> productosFiltrados = repositorioIA.filtrarProductos(criterio); // Llamar al método
+//            StringBuilder mensaje = new StringBuilder("Productos encontrados:\n");
+//            
+//            for (Producto producto : productosFiltrados) {
+//                mensaje.append("Marca: ").append(producto.getMarca())
+//                        .append(", Modelo: ").append(producto.getModelo())
+//                        .append(", Precio: ").append(producto.getPrecio())
+//                        .append(", Descripción: ").append(producto.getDescripcion())
+//                        .append("\n");
+//            }
+//            
+//            // Generar contenido usando la IA
+//            String contenidoGenerado = repositorioIA.crearContenido(mensaje.toString());
+//            System.out.println("Contenido generado: " + contenidoGenerado);
+//            
+//        } catch (SQLException e) {
+//            System.out.println("Error al filtrar productos: " + e.getMessage());
+//        }
+//    }
+//
+//
+//        public String crearContenido (String message){
+//        return servIA.crearContenido(message);
+//    } 
     
 }

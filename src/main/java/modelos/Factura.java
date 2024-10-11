@@ -1,7 +1,8 @@
 package modelos;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 
 public class Factura {
@@ -45,11 +46,11 @@ public class Factura {
 
     }
 
-    public LocalDateTime getFecha() {
+    public Date getFecha() {
         return fecha;
     }
 
-    public void setFecha(LocalDateTime fecha) {
+    public void setFecha(Date fecha) {
         this.fecha = fecha;
     }
 
@@ -58,9 +59,9 @@ public class Factura {
     }
 
     // Método para formatear la fecha a una cadena
-    public String getFechaFormateada() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-        return fecha.format(formatter);
-    }
+//    public String getFechaFormateada() {
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+//        return fecha.format(formatter);
+//    }
 
 }

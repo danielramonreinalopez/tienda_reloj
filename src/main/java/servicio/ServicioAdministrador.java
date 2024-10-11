@@ -5,32 +5,38 @@
 package servicio;
 
 import repositorio.AdministradorRepositorio;
+import repositorio.ProductoRepositorio;
 import modelos.Administrador;
 import excepcion.ErrorTipo;
 import excepcion.InvalidoException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import modelos.Cliente;
+import modelos.Producto;
 /**
  *
  * @author daniel
  */
 public class ServicioAdministrador {
     
-    AdministradorRepositorio admRepo = new AdministradorRepositorio();
+    AdministradorRepositorio admRepositorio = new AdministradorRepositorio();
+    ProductoRepositorio prodRepositorio = new ProductoRepositorio();
     
-//    public boolean validarSiExiste(String correo, String contraseña){ //throw SQLException {
-//        try{
-//            Administrador adm = admRepo.buscarAdministrador(correo);
-//            if(adm.getCorreo() == correo && adm.getContrasenia() == contraseña){
-//                
-//            }
-//        }catch(SQLException e){
-//            System.out.println("No de pudo realizar la coneccion "+ e.getMessage());
-//        }
-//    }
+    public boolean validarSiExiste(String correo, String contraseña){ //throw SQLException {
+        try{
+            Administrador adm = admRepositorio.buscarAdministrador(correo);
+            if(adm.getCorreo() == correo && adm.getContrasenia() == contraseña){
+                return true;
+            }
+            return false;
+        }catch(SQLException e){
+            System.out.println("No de pudo realizar la coneccion "+ e.getMessage());
+        }
+        return false;
+    }
     
     public Administrador iniciarSesion(String correo, String contrasenia) throws SQLException, InvalidoException {
-        Administrador admi = admRepo.buscarAdministrador(correo);
+        Administrador admi = admRepositorio.buscarAdministrador(correo);
         if (admi == null) {
             throw new InvalidoException(ErrorTipo.ERROR_INICIO_SESION_CLIENTE);
         }else{
@@ -40,5 +46,11 @@ public class ServicioAdministrador {
         }
         
         return null;
+    }
+    
+    //Este metodo es para mostrar los productos en la ventana cliente
+    public ArrayList<Producto> obtenerProductos()throws SQLException{
+        ArrayList<Producto> productos = prodRepositorio.obtenerProductos();
+        return productos;
     }
 }

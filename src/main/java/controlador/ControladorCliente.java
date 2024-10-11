@@ -7,6 +7,7 @@ package controlador;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import modelos.Producto;
+import servicio.ServicioCliente;
 import repositorio.ProductoRepositorio;
 
 /**
@@ -15,11 +16,12 @@ import repositorio.ProductoRepositorio;
  */
 public class ControladorCliente {
     
-    private ProductoRepositorio productoRepositorio = new ProductoRepositorio();
+    private ServicioCliente servicioCliente = new ServicioCliente();
+    private ArrayList<Producto> productos;
     
     //Este metodo es para mostrar los productos en la ventana cliente
     public ArrayList<Producto> obtenerProductos()throws SQLException{
-        ArrayList<Producto> productos = productoRepositorio.obtenerProductos();
+        ArrayList<Producto> productos = servicioCliente.obtenerProductos();//Verificar que siga el modelo
         return productos;
     }
 }

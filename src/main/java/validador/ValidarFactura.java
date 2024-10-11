@@ -40,13 +40,13 @@ public class ValidarFactura {
         }
     }
 
-    public static void validarFactura(Factura factura) throws InvalidoException {
-        if (factura == null) {
-            throw new InvalidoException(ErrorTipo.ERROR_GENERAL);
-        }
-        validarCliente(factura.getCliente());
-        validarProductos(factura.getProductos());
-        validarFecha(factura.getFecha());
-        validarTotal(factura.getTotal());
-    }
+//    public static void validarFactura(Factura factura) throws InvalidoException {
+//        if (factura == null) {
+//            throw new InvalidoException(ErrorTipo.ERROR_GENERAL);
+//        }
+//        validarCliente(factura.getCliente());
+//        validarProductos(factura.getProductos());
+//        validarFecha(factura.getFecha());
+//        validarTotal(factura.getTotal());
+//    }
 }

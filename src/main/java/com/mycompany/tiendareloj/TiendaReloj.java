@@ -14,7 +14,9 @@ import java.util.ArrayList;
 import modelos.Cliente;
 import modelos.Producto;
 import repositorio.ClienteRepositorio;
+import repositorio.ProductoRepositorio;
 import servicio.ServicioCliente;
+import servicio.ServicioProducto;
 
 /**
  *
@@ -128,19 +130,46 @@ public class TiendaReloj {
     }
     */
     
-     ControladorIA controladorIA = new ControladorIA();
+//     ControladorIA controladorIA = new ControladorIA();
+//
+//        // Filtrar productos por modelo
+//        System.out.println("Filtrar productos por modelo 'G-shock':");
+//        controladorIA.buscarYGenerarContenido("G-shock");
+//
+//        // Filtrar productos por marca
+//        System.out.println("\nFiltrar productos por marca 'Cassio':");
+//        controladorIA.buscarYGenerarContenido("Cassio");
+//
+//        // Intentar filtrar productos no existentes
+//        System.out.println("\nFiltrar productos no existentes:");
+//        controladorIA.buscarYGenerarContenido("NoExistente");
 
-        // Filtrar productos por modelo
-        System.out.println("Filtrar productos por modelo 'G-shock':");
-        controladorIA.buscarYGenerarContenido("G-shock");
 
-        // Filtrar productos por marca
-        System.out.println("\nFiltrar productos por marca 'Cassio':");
-        controladorIA.buscarYGenerarContenido("Cassio");
 
-        // Intentar filtrar productos no existentes
-        System.out.println("\nFiltrar productos no existentes:");
-        controladorIA.buscarYGenerarContenido("NoExistente");
+        //prueba guardar producto en BD /Funciona
+//        
+//        // Crear un objeto Producto
+        Producto producto = new Producto("Prueba1", "Modelo1", 23456, "Descripcion");
+//
+//        // Instancia de la clase donde está el método guardarProducto
+//        ProductoRepositorio productoRepositorio = new ProductoRepositorio();
+//
+//        try {
+//            // Llamar al método guardarProducto
+//            productoRepositorio.guardarProducto(producto);
+//            System.out.println("Producto guardado correctamente.");
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//            System.out.println("Error al guardar el producto: " + e.getMessage());
+//        }
+
+
+        //Prueba metodo agregar de servicioProducto
+//         ProductoRepositorio productoRepositorio = new ProductoRepositorio(); // Asegúrate de que esta clase esté implementada
+        ServicioProducto productoServicio = new ServicioProducto();
+
+        // Intentar agregar el producto
+        productoServicio.agregarProducto(producto);
     }
 }
 

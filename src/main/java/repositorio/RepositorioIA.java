@@ -80,13 +80,13 @@ import modelos.Producto;
 return null;
  }
 
-   public List<Producto> filtrarProductos(String criterio) throws SQLException {
-        List<Producto> productosFiltrados = productoRepositorio.filtrarProductos(criterio);
-        if (productosFiltrados.isEmpty()) {
-            System.out.println("No se encontraron productos para el criterio: " + criterio);
-        } else {
-            System.out.println("Productos filtrados: " + productosFiltrados);
-        }
-        return productosFiltrados;
-    }
+//   public List<Producto> filtrarProductos(String criterio) throws SQLException {
+//        List<Producto> productosFiltrados = productoRepositorio.filtrarProductos(criterio);
+//        if (productosFiltrados.isEmpty()) {
+//            System.out.println("No se encontraron productos para el criterio: " + criterio);
+//        } else {
+//            System.out.println("Productos filtrados: " + productosFiltrados);
+//        }
+//        return productosFiltrados;
+//    }
  }

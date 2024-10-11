@@ -20,19 +20,19 @@ public class ControladorInicio {
     ServicioCliente serCliente = new ServicioCliente();
     ServicioAdministrador serAdmi = new ServicioAdministrador();
     
-    public boolean iniciarSesion(String correo, String contraseña)throws SQLException, InvalidoException{
+    public int iniciarSesion(String correo, String contraseña)throws SQLException, InvalidoException{
         
         Cliente cliente = serCliente.iniciarSesion(correo, contraseña);
         if(cliente != null){
-            return true;
+            return 1;
         }
         
         Administrador adm = serAdmi.iniciarSesion(correo, contraseña);
         if(adm != null){
-            return true;
+            return 2;
         }
         
-        return false;
+        return 0;
     }
     
 }

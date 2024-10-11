@@ -24,8 +24,8 @@ public class ServicioIA {
     }
     
     // En ServicioIA
-public List<Producto> filtrarProductos(String criterio) throws SQLException {
-    return iaRepo.filtrarProductos(criterio);
-}
+//    public List<Producto> filtrarProductos(String criterio) throws SQLException {
+//        return iaRepo.filtrarProductos(criterio);
+//    }
 
 }

@@ -1,6 +1,7 @@
 package servicio;
 
-import org.mindrot.jbcrypt.BCrypt; // Importar la librería BCrypt
+//import org.mindrot.jbcrypt.BCrypt; // Importar la librería BCrypt
+import org.mindrot.jbcrypt.BCrypt;
 import java.sql.SQLException;
 
 
@@ -20,6 +21,7 @@ public class ServicioCliente {
     
     public ServicioCliente() {
         clienteRepositorio = new ClienteRepositorio();
+        productoRepositorio = new ProductoRepositorio();
     }
 
     // Método para iniciar sesión
