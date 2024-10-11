@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 import modelos.Producto;
+import modelos.Administrador;
 import controlador.ControladorAdministrador;
 import javax.swing.JOptionPane;
 
@@ -19,9 +20,22 @@ public class VentanaAdministrador extends javax.swing.JFrame {
 
     private ArrayList<Producto> productos;
     private ControladorAdministrador controlador;
+    private Administrador administrador;
     /**
      * Creates new form VentanaAdministrador
      */
+    public VentanaAdministrador(Administrador administrador) {
+        initComponents();
+        setLocationRelativeTo(this);
+        controlador = new ControladorAdministrador();
+        this.administrador = administrador;
+        try {
+            llenarTablaProducto();  // Método que accede a la base de datos
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Error al cargar productos: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
     public VentanaAdministrador() {
         initComponents();
         setLocationRelativeTo(this);
@@ -307,11 +321,6 @@ public class VentanaAdministrador extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Se edito con exito");
         }else{
             JOptionPane.showMessageDialog(null, "No se pudo editar");
-        }
-        try{
-            llenarTablaProducto();
-        }catch(SQLException e){
-            System.out.println(e.getMessage());
         }
         try{
             llenarTablaProducto();

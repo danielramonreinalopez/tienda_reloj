@@ -34,7 +34,7 @@ public class ServicioCliente {
             if (BCrypt.checkpw(contrasenia, cliente.getContrasenia())) {
                 return cliente;
             } else {
-                throw new InvalidoException(ErrorTipo.ERROR_INICIO_SESION_CLIENTE); // Contraseña incorrecta
+                return null;
             }
         }
     }

@@ -16,12 +16,37 @@ import modelos.Cliente;
 public class AdministradorRepositorio {
 
 	//Metodo para buscar un administrador
-	public Administrador buscarAdministrador(String correo) throws SQLException {
+	public Administrador buscarAdministrador(String correo, String contrasenia) throws SQLException {
+        String consulta = "SELECT * FROM administrador WHERE correo = ? AND contrasenia = ?";
+        try (Connection conexion = ConfiguracionBaseDatos.getConnection();
+             PreparedStatement statement = conexion.prepareStatement(consulta)) {
+
+            statement.setString(1,correo);
+            statement.setString(2,contrasenia);
+
+            try (ResultSet resultset = statement.executeQuery()) {
+                if (resultset.next()) {
+                    return new Administrador(
+                        resultset.getString("rol"),
+                        resultset.getString("nombre"),
+                        resultset.getString("apellido"),
+                        resultset.getInt("celular"),
+                        resultset.getString("correo"),
+                        resultset.getString("contrasenia")
+                    );
+                } else {
+                    return null; 
+                }
+            }
+        }
+    }
+        
+        public Administrador buscarAdministradorPorCorreo(String correo) throws SQLException {
         String consulta = "SELECT * FROM administrador WHERE correo = ?";
         try (Connection conexion = ConfiguracionBaseDatos.getConnection();
              PreparedStatement statement = conexion.prepareStatement(consulta)) {
 
-            statement.setString(6,correo);
+            statement.setString(1,correo);
 
             try (ResultSet resultset = statement.executeQuery()) {
                 if (resultset.next()) {
@@ -63,7 +88,7 @@ public class AdministradorRepositorio {
 
 	//Metodo para editar un administrador
 	public void editarAdministrador(Administrador administrador) throws SQLException, InvalidoException {
-		Administrador administradorExistente = buscarAdministrador(administrador.getCorreo());
+		Administrador administradorExistente = buscarAdministrador(administrador.getCorreo(), administrador.getContrasenia());
 		if (administradorExistente != null) {
 			String consulta = "UPDATE administrador SET rol = ?,nombre = ?,apellido = ?,celular = ?,contrasenia = ? WHERE correo = ? ";
 			try(Connection conexion = ConfiguracionBaseDatos.getConnection();
@@ -85,7 +110,7 @@ public class AdministradorRepositorio {
 
 	// Metodo para eliminar un administrador por correo
 	public void eliminarAdministrador(String correo) throws SQLException, InvalidoException {
-	    Administrador administradorExistente = buscarAdministrador(correo);
+	    Administrador administradorExistente = buscarAdministradorPorCorreo(correo);
 	    if (administradorExistente != null) {
 	        String consulta = "DELETE FROM administrador WHERE correo = ?";
 	        try (Connection conexion = ConfiguracionBaseDatos.getConnection();

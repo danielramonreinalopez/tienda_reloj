@@ -142,7 +142,7 @@ public class VentanaCliente extends javax.swing.JFrame {
         jScrollPane3 = new javax.swing.JScrollPane();
         tblProducto = new javax.swing.JTable();
         btnConfirmarCompra = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        btnRegresar = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
 
         jTable2.setModel(new javax.swing.table.DefaultTableModel(
@@ -310,7 +310,12 @@ public class VentanaCliente extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setText("Regresar");
+        btnRegresar.setText("Regresar");
+        btnRegresar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegresarActionPerformed(evt);
+            }
+        });
 
         jButton3.setText("Facturas");
 
@@ -328,7 +333,7 @@ public class VentanaCliente extends javax.swing.JFrame {
                                 .addGap(10, 10, 10)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(btnConfirmarCompra, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jButton2))
+                                    .addComponent(btnRegresar))
                                 .addGap(48, 48, 48)
                                 .addComponent(jButton3)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -353,7 +358,7 @@ public class VentanaCliente extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton3)
-                    .addComponent(jButton2))
+                    .addComponent(btnRegresar))
                 .addGap(14, 14, 14))
         );
 
@@ -423,6 +428,13 @@ public class VentanaCliente extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_cbFiltroActionPerformed
 
+    private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
+        // TODO add your handling code here:
+        VentanaInicio vi = new VentanaInicio();
+        vi.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_btnRegresarActionPerformed
+
     
 
 
@@ -430,9 +442,9 @@ public class VentanaCliente extends javax.swing.JFrame {
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnConfirmarCompra;
     private javax.swing.JButton btnQuitar;
+    private javax.swing.JButton btnRegresar;
     private javax.swing.JComboBox<String> cbFiltro;
     private javax.swing.JComboBox<String> cbOpcioonesFiltrado;
-    private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;

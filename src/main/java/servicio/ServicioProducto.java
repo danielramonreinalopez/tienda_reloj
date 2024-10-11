@@ -45,9 +45,11 @@ public class ServicioProducto {
     public boolean editarProducto(Producto producto) {
         try {
             ValidarProducto.validarProductoConExcepciones(producto); // Cambiar a método con excepciones
-            productoRepositorio.actualizarProducto(producto);
-            System.out.println("Producto actualizado exitosamente.");
-            return true;
+            boolean aux = productoRepositorio.actualizarProducto(producto);
+            if(aux){
+                System.out.println("Producto actualizado exitosamente.");
+                return true;
+            }
         } catch (InvalidoException e) {
             System.out.println("Error de validación: " + e.getMessage());
         } catch (SQLException e) {

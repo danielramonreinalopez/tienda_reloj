@@ -5,11 +5,16 @@
 package vistas;
 
 import controlador.ControladorInicio;
+import excepcion.ErrorTipo;
 import vistas.VentanaCliente;
 import vistas.VentanaRegistro;
 import excepcion.InvalidoException;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import modelos.Administrador;
+import modelos.Cliente;
 
 /**
  *
@@ -45,6 +50,7 @@ public class VentanaInicio extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         btnIngresar = new javax.swing.JButton();
         btnRegistrar = new javax.swing.JButton();
+        btnAdministrador = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -68,6 +74,13 @@ public class VentanaInicio extends javax.swing.JFrame {
             }
         });
 
+        btnAdministrador.setText("Administrador");
+        btnAdministrador.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAdministradorActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -86,7 +99,9 @@ public class VentanaInicio extends javax.swing.JFrame {
                     .addComponent(btnIngresar, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(90, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
+                .addComponent(btnAdministrador)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnRegistrar)
                 .addContainerGap())
         );
@@ -106,7 +121,9 @@ public class VentanaInicio extends javax.swing.JFrame {
                 .addGap(33, 33, 33)
                 .addComponent(btnIngresar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
-                .addComponent(btnRegistrar)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnRegistrar)
+                    .addComponent(btnAdministrador))
                 .addContainerGap())
         );
 
@@ -129,24 +146,18 @@ public class VentanaInicio extends javax.swing.JFrame {
         String correo = txtCorreo.getText();
         String contraseña = txtContraseña.getText();
         try{
-            int aux = controlador.iniciarSesion(correo, contraseña);
-            if(aux == 1){
-                VentanaCliente vc = new VentanaCliente();
+            Cliente cliente = controlador.iniciarSesionCliente(correo, contraseña);
+            if(cliente != null){
+                VentanaCliente vc = new VentanaCliente(cliente);
                 vc.setVisible(true);
                 this.dispose();
-            }
-            if(aux == 2){
-                VentanaAdministrador va = new VentanaAdministrador();
-                va.setVisible(true);
-                this.dispose();
-            }
-            if(aux == 0){
-                JOptionPane.showMessageDialog(null, "Usuario O contraseña incorrectos");
+            }else{
+                JOptionPane.showMessageDialog(null, "Correo o contraseña incorretos");
             }
         }catch(SQLException e){
-            JOptionPane.showMessageDialog(null, "Error en la coneccion" + e.getMessage());
-        }catch(InvalidoException e){
-            JOptionPane.showMessageDialog(null, "Error de tipo de dato" + e.getMessage());
+            JOptionPane.showMessageDialog(null, "Correo o contraseña incorretos");
+        } catch (InvalidoException ex) {
+            Logger.getLogger(VentanaInicio.class.getName()).log(Level.SEVERE, null, ex);
         }
     }//GEN-LAST:event_btnIngresarActionPerformed
 
@@ -155,6 +166,26 @@ public class VentanaInicio extends javax.swing.JFrame {
         vr.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_btnRegistrarActionPerformed
+
+    private void btnAdministradorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAdministradorActionPerformed
+        // TODO add your handling code here:
+        String correo = txtCorreo.getText();
+        String contraseña = txtContraseña.getText();
+        try{
+            Administrador administrador = controlador.iniciarSesionAdministrador(correo, contraseña);
+                    if(administrador != null){
+                        VentanaAdministrador va = new VentanaAdministrador(administrador);
+                        va.setVisible(true);
+                        this.dispose();
+                    }else{
+                        JOptionPane.showMessageDialog(null, "Correo o contraseña incorretos");
+                    }
+        }catch(SQLException e){
+            JOptionPane.showMessageDialog(null, "Correo o contraseña incorretos, SQL");
+        } catch (InvalidoException ex) {
+            Logger.getLogger(VentanaInicio.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnAdministradorActionPerformed
 
     /**
      * @param args the command line arguments
@@ -193,6 +224,7 @@ public class VentanaInicio extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAdministrador;
     private javax.swing.JButton btnIngresar;
     private javax.swing.JButton btnRegistrar;
     private javax.swing.JLabel jLabel1;

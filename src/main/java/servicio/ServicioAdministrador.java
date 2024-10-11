@@ -22,10 +22,10 @@ public class ServicioAdministrador {
     AdministradorRepositorio admRepositorio = new AdministradorRepositorio();
     ProductoRepositorio prodRepositorio = new ProductoRepositorio();
     
-    public boolean validarSiExiste(String correo, String contraseña){ //throw SQLException {
+    public boolean validarSiExiste(String correo, String contrasenia){ //throw SQLException {
         try{
-            Administrador adm = admRepositorio.buscarAdministrador(correo);
-            if(adm.getCorreo() == correo && adm.getContrasenia() == contraseña){
+            Administrador adm = admRepositorio.buscarAdministrador(correo, contrasenia);
+            if(adm.getCorreo() == correo && adm.getContrasenia() == contrasenia){
                 return true;
             }
             return false;
@@ -36,16 +36,14 @@ public class ServicioAdministrador {
     }
     
     public Administrador iniciarSesion(String correo, String contrasenia) throws SQLException, InvalidoException {
-        Administrador admi = admRepositorio.buscarAdministrador(correo);
-        if (admi == null) {
-            throw new InvalidoException(ErrorTipo.ERROR_INICIO_SESION_CLIENTE);
+        Administrador admi = admRepositorio.buscarAdministrador(correo, contrasenia);
+        if (admi != null) {
+            return admi;
         }else{
-            if(admi.getContrasenia() == contrasenia){
-                return admi;
-            }
-        }
+//            throw new InvalidoException(ErrorTipo.ERROR_INICIO_SESION_CLIENTE);
         
-        return null;
+            return null;
+        }
     }
     
     //Este metodo es para mostrar los productos en la ventana cliente

@@ -11,12 +11,20 @@ import excepcion.InvalidoException;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import modelos.Administrador;
 import modelos.Cliente;
 import modelos.Producto;
+import repositorio.AdministradorRepositorio;
 import repositorio.ClienteRepositorio;
 import repositorio.ProductoRepositorio;
+import servicio.ServicioAdministrador;
 import servicio.ServicioCliente;
 import servicio.ServicioProducto;
+import vistas.VentanaAdministrador;
+import vistas.VentanaInicio;
 
 /**
  *
@@ -24,7 +32,7 @@ import servicio.ServicioProducto;
  */
 public class TiendaReloj {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InvalidoException {
     /*    System.out.println("Hello World!");
          ClienteRepositorio clienteRepo = new ClienteRepositorio();
          ServicioCliente servicio = new ServicioCliente();
@@ -149,7 +157,7 @@ public class TiendaReloj {
         //prueba guardar producto en BD /Funciona
 //        
 //        // Crear un objeto Producto
-        Producto producto = new Producto("Prueba1", "Modelo1", 23456, "Descripcion");
+//        Producto producto = new Producto("Prueba1", "Modelo1", 23456, "Descripcion");
 //
 //        // Instancia de la clase donde está el método guardarProducto
 //        ProductoRepositorio productoRepositorio = new ProductoRepositorio();
@@ -166,10 +174,51 @@ public class TiendaReloj {
 
         //Prueba metodo agregar de servicioProducto
 //         ProductoRepositorio productoRepositorio = new ProductoRepositorio(); // Asegúrate de que esta clase esté implementada
-        ServicioProducto productoServicio = new ServicioProducto();
+//        ServicioProducto productoServicio = new ServicioProducto();
 
         // Intentar agregar el producto
-        productoServicio.agregarProducto(producto);
+//        productoServicio.agregarProducto(producto);
+
+
+//        try {
+//        ServicioCliente servicio = new ServicioCliente(); // Asumiendo que tienes una clase ServicioCliente que contiene el método buscarCliente
+//        String correo = "prueba@ejemplo.com"; // Un correo que sí exista en la base de datos
+//        String contrasenia = "123";
+//        Cliente cliente = servicio.iniciarSesion(correo, correo); // Llamada al método buscarCliente
+//
+//        if (cliente == null) {
+//            System.out.println("No se encontró ningún cliente con el correo: " + correo);
+//        } else {
+//            // Si se encontró el cliente, imprime sus detalles
+//            System.out.println("Cliente encontrado:");
+//            System.out.println("Nombre: " + cliente.getNombre());
+//            System.out.println("Apellido: " + cliente.getApellido());
+//            System.out.println("Celular: " + cliente.getCelular());
+//            System.out.println("Correo: " + cliente.getCorreo());
+//            System.out.println("Dirección: " + cliente.getDireccion());
+//        }
+//    } catch (SQLException e) {
+//        e.printStackTrace(); // Imprime cualquier error de SQL
+//    }
+
+//        ServicioAdministrador servicio = new ServicioAdministrador();
+//        AdministradorRepositorio repositorio = new AdministradorRepositorio();
+//
+//        String correo = "Ruiz@ejemplo.com";
+//        String contraseña = "987";
+//        try{
+//            Administrador administrador = repositorio.buscarAdministrador(correo, contraseña);
+//                    if(administrador != null){
+//                        VentanaAdministrador va = new VentanaAdministrador(administrador);
+//                        va.setVisible(true);
+//                    }else{
+//                        JOptionPane.showMessageDialog(null, "Correo o contraseña incorretos");
+//                    }
+//        }catch(SQLException e){
+//            JOptionPane.showMessageDialog(null, "Correo o contraseña incorretos, SQL");
+////        } catch (InvalidoException ex) {
+////            Logger.getLogger(VentanaInicio.class.getName()).log(Level.SEVERE, null, ex);
+//        }
     }
 }
 

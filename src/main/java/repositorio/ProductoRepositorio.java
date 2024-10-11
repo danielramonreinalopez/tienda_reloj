@@ -55,7 +55,7 @@ public class ProductoRepositorio {
 	}
 
 	// Método para actualizar un producto existente
-	public void actualizarProducto(Producto producto) throws SQLException {
+	public boolean actualizarProducto(Producto producto) throws SQLException {
 	    String consulta = "UPDATE producto SET WHERE marca = ?, modelo = ?, precio = ?, descripcion = ? ";
 	    try (Connection conexion = ConfiguracionBaseDatos.getConnection();
 	         PreparedStatement statement = conexion.prepareStatement(consulta)) {
@@ -66,6 +66,7 @@ public class ProductoRepositorio {
 	        statement.setString(4, producto.getDescripcion());
 	        
 	        statement.executeUpdate();
+                return true;
 	    }
 	}
 

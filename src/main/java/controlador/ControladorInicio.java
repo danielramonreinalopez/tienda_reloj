@@ -20,19 +20,23 @@ public class ControladorInicio {
     ServicioCliente serCliente = new ServicioCliente();
     ServicioAdministrador serAdmi = new ServicioAdministrador();
     
-    public int iniciarSesion(String correo, String contraseña)throws SQLException, InvalidoException{
+    public Cliente iniciarSesionCliente(String correo, String contraseña)throws SQLException, InvalidoException{
         
         Cliente cliente = serCliente.iniciarSesion(correo, contraseña);
         if(cliente != null){
-            return 1;
+            return cliente;
         }
+        return null;
+    }
+    
+    public Administrador iniciarSesionAdministrador(String correo, String contraseña) throws SQLException, InvalidoException{
         
         Administrador adm = serAdmi.iniciarSesion(correo, contraseña);
         if(adm != null){
-            return 2;
+            return adm;
         }
-        
-        return 0;
+        return null;
+
     }
     
 }

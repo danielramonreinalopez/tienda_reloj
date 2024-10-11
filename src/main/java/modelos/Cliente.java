@@ -18,4 +18,8 @@ public class Cliente extends Usuario {
     public void setDireccion(String direccion) {
     	 this.direccion = direccion; 
     } 
+
+    public String getCelular() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }
